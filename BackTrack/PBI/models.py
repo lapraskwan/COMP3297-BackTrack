@@ -6,3 +6,6 @@ class PB_item(models.Model):
     status=models.CharField(max_length=100,default="pending",blank=True)
     priority=models.IntegerField()
     story_point=models.IntegerField(default=1,)
+
+    class Meta:
+        ordering = ["priority"]
