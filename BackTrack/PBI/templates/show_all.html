@@ -1,0 +1,15 @@
+{% extends 'main.html'%}
+
+
+
+{% block content%}
+<table width=50%>
+<tr><th>Feature</th>   <th>Status</th>   <th>Priority</th>   <th>Story point</th> <th></th><th></th></tr>
+{% for i in item %}
+  <tr><td>{{ i.feature }}</td>   <td>{{ i.status }}</td>   <td>{{ i.priority }}</td>   <td>{{i.story_point}}</td> <th><a href="detail/{{i.id}}"><button>edit</button></a></th><th><a href="delete/{{i.id}}"><button>delete</button></a></th></tr>
+
+
+{% endfor %}
+</table>
+<a href="../AddPBI/">Add Feature</a>
+{% endblock%}

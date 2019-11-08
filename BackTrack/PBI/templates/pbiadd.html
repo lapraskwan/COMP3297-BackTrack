@@ -1,0 +1,14 @@
+{% extends 'main.html'%}
+
+
+
+{% block content%}
+<form method='POST'> {% csrf_token %}
+{{ form.as_p }}
+
+
+<input type='submit' value='Save'/>
+<!-- <button formaction="../PBI/">Button</button> -->
+</form>
+<a href="../PBI/">Back to main page</a>
+{% endblock%}
