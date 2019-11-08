@@ -1,9 +1,10 @@
 from django.urls import path
 
-from . import views
+from PBI.views import backlog_view, add_view, detail_view, delete_view
 
 urlpatterns = [
-    path('', views.main_view, name='main'),
-    #path('add/',views.add_view,name='pbi_add')
-    #path('/detail<>')
+    path('', backlog_view, name='backlog'),
+    path('add/',add_view, name='add'),
+    path('detail/<int:id>',detail_view, name='detail'),
+    path('delete/<int:id>',delete_view, name='delete'),
 ]
