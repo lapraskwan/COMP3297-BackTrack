@@ -15,16 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from PBI.views import main_view, add_view, detail_view, delete_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', include('login.urls')),
-    path('PBI/',main_view),
-    path('AddPBI/',add_view),
-    path('BackToMainPBI',main_view),
-    path('PBI/detail/<int:id>',detail_view),
-    path('PBI/delete/<int:id>',delete_view),
-    # path('PBI/', include('PBI.urls')),
+    path('PBI/',include('PBI.urls')),
     path('sprint_backlog/', include('sprint_backlog.urls')),
 ]
