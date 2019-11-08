@@ -25,4 +25,6 @@ urlpatterns = [
     path('BackToMainPBI',main_view),
     path('PBI/detail/<int:id>',detail_view),
     path('PBI/delete/<int:id>',delete_view),
+    # path('PBI/', include('PBI.urls')),
+    path('sprint_backlog/', include('sprint_backlog.urls')),
 ]

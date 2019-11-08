@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'sprint_backlog.apps.SprintBacklogConfig',
     'PBI.apps.PbiConfig',
     'login.apps.LoginConfig',
     'django.db.backends.sqlite3',
@@ -57,7 +58,7 @@ ROOT_URLCONF = 'BackTrack.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR,"Templaes")],
+        'DIRS': [os.path.join(BASE_DIR,"Templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
