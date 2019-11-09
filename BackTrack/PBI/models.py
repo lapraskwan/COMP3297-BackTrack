@@ -9,7 +9,7 @@ class PB_item(models.Model):
     name=models.CharField(max_length=100)
     
     #status of this PBI, e.g. "Finished"
-    status=models.CharField(max_length=100,default="pending",blank=True)
+    status=models.CharField(max_length=100,default="Pending",blank=True)
     
     #Priority number of this PBI, i.e. the most important feature has priority 1, the second most has priority 2, etc
     priority_no=models.IntegerField()

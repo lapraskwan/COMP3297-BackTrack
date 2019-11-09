@@ -1,11 +1,11 @@
 from django.urls import path
 
-from . import views
+from sprint_backlog.views import backlog_view,add_view,delete_view,edit_view,pushPBIBack_view
 
 urlpatterns = [
-    path('', views.showAll, name='showAll'),
-    path('add/<int:id>', views.add, name='add'),
-    path('delete/<int:id>', views.delete, name='delete'),
-    path('update/<int:id>', views.update, name='update'),
-    path('pushPBIBack/<int:id>', views.pushPBIBack, name='pushPBIBack'),
+    path('', backlog_view, name='backlog'),
+    path('add/<int:id>', add_view, name='add'),
+    path('delete/<int:id>', delete_view, name='delete'),
+    path('update/<int:id>', edit_view, name='edit'),
+    path('pushPBIBack/<int:id>', pushPBIBack_view, name='pushPBIBack'),
 ]

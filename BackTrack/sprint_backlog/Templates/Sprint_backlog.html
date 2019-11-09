@@ -1,23 +1,26 @@
-{% extends 'base.html'%}
+{% extends 'Sprint_base.html'%}
 
 {% block content%}
 <h2>PBIs pending in this sprint</h2>
-<table width=50%>
+<table width=75% border="1">
     <tr>
-        <th>name</th>
-        <th>Status</th>
-        <th>Priority</th>
-        <th>Story point</th>
-        <th>user_story</th>
-        <th>confirmation</th>
+        <th  align=left>Feature</th>
+        <th  align=left>Status</th>
+        <th  align=left>Priority number</th>
+        <th  align=left>Story point</th>
+        <th  align=left>User story</th>
+        <th  align=left>Confirmation</th>
+        <th></th>
         <th></th>
     </tr>
     {% for i in PBI %}
     <tr>
-        <td>{{ i.feature }}</td>
+        <td>{{ i.name }}</td>
         <td>{{ i.status }}</td>
-        <td>{{ i.priority }}</td>
+        <td>{{ i.priority_no }}</td>
         <td>{{ i.story_point }}</td>
+        <td>{{ i.user_story }}</td>
+        <td>{{ i.confirmation }}</td>
         {% if disableButton %}
         <td><a href="add/{{i.id}}"><button disabled>Add Sprint Item</button></a></td>
         {% else %}
@@ -28,14 +31,16 @@
     {% endfor %}
 </table>
 
+<br>
+<br>
 <h2>Sprint Backlog</h2>
-<table width=50%>
+<table width=75% border="1">
     <tr>
-        <th>PBI</th>
-        <th>Title</th>
-        <th>Status</th>
-        <th>Owner</th>
-        <th>Estimation (Hours)</th>
+        <th align=left>PBI</th>
+        <th align=left>Title</th>
+        <th align=left>Status</th>
+        <th align=left>Owner</th>
+        <th align=left>Estimation (Hours)</th>
         <th></th>
         <th></th>
     </tr>
@@ -43,7 +48,7 @@
         {% for i in item %}
             {% if i.PBI == PBI.id %}
             <tr>
-                <td>{{ PBI.feature }}</td>
+                <td>{{ PBI.name }}</td>
                 <td>{{ i.title }}</td>
                 <td>{{ i.status }}</td>
                 <td>{{ i.owner }}</td>
@@ -56,8 +61,10 @@
     {% endfor %}
 </table>
 
+<br>
+<br>
 <h2>Sprint Burndown</h2>
-<table>
+<table border="1">
     <tr>
         <th></th>
         <th>Total Estimation</th>
@@ -65,18 +72,20 @@
         <th>Remaining Estimation</th>
     </tr>
     <tr>
-        <th>In Hours</th>
+        <th align=right>In Hours</th>
         <td>{{ totalEstimation }}</td>
         <td>{{ finishedEstimation }}</td>
         <td>{{ remainingEstimation }}</td>
     </tr>
     <tr>
-        <th>In Percentages</th>
-        <td></td>
+        <th align=right>In Percentages</th>
+        <td>100%</td>
         <td>{{ finishedPercentage }}%</td>
         <td>{{ remainingPercentage }}%</td>
     </tr>
 </table>
 
-<a href="../PBI">Back to Product Backlog</a>
+<br>
+<br>
+<a href="../PBI"><button>Go to Product Backlog</button></a>
 {% endblock%}

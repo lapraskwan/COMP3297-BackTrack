@@ -1,14 +1,11 @@
-{% extends 'base.html'%}
+{% extends 'PBI_base.html'%}
 
 
 
 {% block content%}
 <form method='POST'> {% csrf_token %}
 {{ form.as_p }}
-
-
 <input type='submit' value='Save'/>
-<!-- <button formaction="../PBI/">Button</button> -->
 </form>
-<a href="../">Back to main page</a>
+<a href="../"><button>Back to main page</button></a>
 {% endblock%}

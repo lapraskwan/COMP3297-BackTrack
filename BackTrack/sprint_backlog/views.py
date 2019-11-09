@@ -7,9 +7,9 @@ from .forms import sprint_backlog_item_form
 # Create your views here.
 capacity = capacity.objects.filter(id=1)[0].capacity
 
-def showAll(request):
+def backlog_view(request):
     # Get all PBIs that are in progress in the sprint
-    pendingPBIItems = PB_item.objects.filter(status="pending")
+    pendingPBIItems = PB_item.objects.filter(status="Pending")
     # Get the PBI ids
     pendingPBIIds = []
     for PBI in pendingPBIItems:
@@ -56,13 +56,13 @@ def showAll(request):
         "alert_flag_2": alert_flag_2, 
         "disableButton": disableButton
         }
-    return render(request, "showAll.html", context)
+    return render(request, "Sprint_backlog.html", context)
 
-def add(request, id):
+def add_view(request, id):
     form=sprint_backlog_item_form(request.POST or None, initial={"PBI": id})
 
     # Get all PBIs that are in progress in the sprint
-    pendingPBIItems = PB_item.objects.filter(status="pending")
+    pendingPBIItems = PB_item.objects.filter(status="Pending")
     # Get the PBI ids
     pendingPBIIds = []
     for PBI in pendingPBIItems:
@@ -83,20 +83,20 @@ def add(request, id):
         if form.cleaned_data["estimation"] + totalEstimation > capacity:
             # Return
             context={'form': form, "alert_flag_1": True}
-            return render(request, "addSprintItem.html", context)
+            return render(request, "add.html", context)
         else:
             form.save()
             return redirect('../')
     context={'form':form}
-    return render(request,"addSprintItem.html",context)
+    return render(request,"Sprint_add.html",context)
 
-def delete(request, id):
+def delete_view(request, id):
     # Delete the sprint backlog item with the given id
     sprint_backlog_item.objects.filter(id=id).delete()
     # Return
     return redirect("../")
 
-def update(request, id):
+def edit_view(request, id):
     # Get the sprint backlog item with the given id
     item=sprint_backlog_item.objects.get(id=id)
     # Create a form with proper initials
@@ -109,7 +109,7 @@ def update(request, id):
         })
     
     # Get all PBIs that are in progress in the sprint
-    pendingPBIItems = PB_item.objects.filter(status="pending")
+    pendingPBIItems = PB_item.objects.filter(status="Pending")
     # Get the PBI ids
     pendingPBIIds = []
     for PBI in pendingPBIItems:
@@ -138,11 +138,11 @@ def update(request, id):
         
     context={'form':form}
 
-    return render(request,"addSprintItem.html",context)
+    return render(request,"Sprint_add.html",context)
 
-def pushPBIBack(request, id):
+def pushPBIBack_view(request, id):
     PBI = PB_item.objects.get(id=id)
-    PBI.status = "pending"
+    PBI.status = "Pending"
     PBI.save()
     # Return
     return redirect('../')
