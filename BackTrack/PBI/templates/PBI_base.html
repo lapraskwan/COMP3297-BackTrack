@@ -1,11 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>BackTrack</title>
-  </head>
 
-  <body>
-    <h1>Product backlog</h1>
-{% block content %}
-{% endblock%}
-  </body>
+<head>
+  <title>BackTrack</title>
+  <style>
+    table, th, td {
+      border: 1px solid black;
+    }
+    table {
+      width: 75%;
+    }
+    th {
+      text-align: left;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Product backlog</h1>
+  {% block content %}
+  {% endblock%}
+</body>
+
+<script>
+  function filterFinishedPBI() { // To filter out/show all the finished PBIs
+    // Get the HTML objects
+    var finishedPBIs = document.getElementsByClassName("Finished");
+    var button = document.getElementById("hide");
+    // For every finished PBI show/display it
+    for (var finishedPBI of finishedPBIs) {
+      if (finishedPBI.style.display == "") {
+        finishedPBI.setAttribute("style", "display:none");
+        button.innerHTML = "Show All PBIs";
+      } else {
+        finishedPBI.removeAttribute("style");
+        button.innerHTML = "Hide Finished PBIs";
+      }
+    }
+  }
+
+  // To show cumulative story points
+  var storyPointsData = document.getElementsByClassName("story_point")
+  var cumulative_story_points = 0;
+  var priority = 1
+  for (var storyPoint of storyPointsData){
+    cumulative_story_points += parseInt(storyPoint.innerHTML);
+    document.getElementById("cumulative_story_point" + priority).innerHTML = cumulative_story_points;
+    priority += 1;
+  }
+  
+</script>
+
+</html>

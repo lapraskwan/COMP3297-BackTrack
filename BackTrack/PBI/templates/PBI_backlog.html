@@ -5,46 +5,72 @@
 
 {% block content%}
 
-<h3>Finished story points: {{Cumulative_story_points}} / {{Total_story_points}}</h3>
+<h3>Finished story points: {{finished_story_points}} / {{total_story_points}}</h3>
 
-<h2>Upcoming PBIs</h2>
-<table width=75% border="1">
+<h2>PBIs</h2>
+<table>
   <tr>
-    <th align=left>Feature</th>   
-    <th align=left>Status</th>   
-    <th align=left>Priority number</th>   
-    <th align=left>Story point</th>
-    <th align=left>User story</th>   
-    <th align=left>Confirmation</th>  
-    <th></th><th></th></tr>
-  
-  {% for item in PBI_upcoming %}
-    <tr><td>{{ item.name }}</td>   <td>{{ item.status }}</td>   <td>{{ item.priority_no }}</td>   <td>{{item.story_point}}</td>  <td>{{ item.user_story }}</td>   <td>{{item.confirmation}}</td>  <th><a href="edit/{{item.id}}"><button>edit</button></a></th><th><a href="delete/{{item.id}}"><button>delete</button></a></th></tr>
+    <th>Feature</th>
+    <th>Status</th>
+    <th>Priority number</th>
+    <th>Story point</th>
+    <th>Cumulative Story Point</th>
+    <th>Sprint Number</th>
+    <th>User story</th>
+    <th>Confirmation</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+  {% for item in PBI_all %}
+  <tr class="{{item.status}}">
+    <td>{{ item.name }}</td>
+    <td>{{ item.status }}</td>
+    <td>
+      {{ item.priority_no }}
+      {% if item.priority_no == 1 %}
+      <a href="movePBIup/{{item.id}}"><button disabled>+</button></a>
+      <a href="movePBIdown/{{item.id}}"><button>-</button></a>
+      {% elif item.priority_no == lowestPriority %}
+      <a href="movePBIup/{{item.id}}"><button>+</button></a>
+      <a href="movePBIdown/{{item.id}}"><button disabled>-</button></a>
+      {% else %}
+      <a href="movePBIup/{{item.id}}"><button>+</button></a>
+      <a href="movePBIdown/{{item.id}}"><button>-</button></a>
+      {% endif %}
+    </td>
+    <td class="story_point">{{ item.story_point }}</td>
+    <td id="cumulative_story_point{{item.priority_no}}"></td>
+    <td>{{ item.sprint_no }}</td>
+    <td>{{ item.user_story }}</td>
+    <td>{{ item.confirmation }}</td>
+    {% if item.status == "Pending" or item.status == "Unfinished" %}
+    <td><a href="edit/{{item.id}}"><button>edit</button></a></td>
+    <td><a href="delete/{{item.id}}"><button>delete</button></a></td>
+    {% if activeSprintExists %}
+    <td><a href="addPBIToCurrentSprint/{{item.id}}"><button>Add To Sprint</button></a></td>
+    {% else %}
+    <td><a href="addPBIToCurrentSprint/{{item.id}}"><button disabled>Add To Sprint</button></a></td>
+    {% endif %}
+    {% else %}
+    <td><a href="edit/{{item.id}}"><button disabled>edit</button></a></td>
+    <td><a href="delete/{{item.id}}"><button disabled>delete</button></a></td>
+    <td><a href="addPBIToCurrentSprint/{{item.id}}"><button disabled>Add To Sprint</button></a></td>
+    {% endif %}
+  </tr>
   {% endfor %}
-  </table>
-  
-  <br>
-  <br>
-  <br>
-  <br>
 </table>
 
-
-
-<h2>All PBIs</h2>
-<table width=75% border="1">
-<tr><th align=left>Feature</th>   <th align=left>Status</th>   <th align=left>Priority number</th>   <th align=left>Story point</th> <th align=left>User story</th>   <th align=left>Confirmation</th>  <th></th><th></th></tr>
-
-{% for item in PBI_all %}
-  <tr><td>{{ item.name }}</td>   <td>{{ item.status }}</td>   <td>{{ item.priority_no }}</td>   <td>{{item.story_point}}</td>  <td>{{ item.user_story }}</td>   <td>{{item.confirmation}}</td>  <th><a href="edit/{{item.id}}"><button>edit</button></a></th><th><a href="delete/{{item.id}}"><button>delete</button></a></th></tr>
-{% endfor %}
-</table>
-
-<br>
-<br>
-<br>
 <br>
 <a href="add/"><button>Add PBI</button></a>
 <br>
+<button onclick="filterFinishedPBI()" id="hide">Hide Finished PBI</button>
+<br>
+{% if activeSprintExists %}
+<!-- <button href="createSprint/"><button disabled>Create Sprint</button></a> -->
 <a href="../sprint_backlog/"><button>Go to sprint backlog</button></a>
+{% else %}
+<a href="createSprint/"><button>Create Sprint</button></a>
+{% endif %}
 {% endblock%}

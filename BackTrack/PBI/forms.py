@@ -1,18 +1,26 @@
 from django import forms
 
-from .models import PB_item
+from .models import PB_item, Sprint
 
 
 class PB_itemForm(forms.ModelForm):
     class Meta:
         model=PB_item
         fields=[
-            'name','status','priority_no','story_point','user_story','confirmation'
+            'name','status','priority_no','story_point', 'user_story','confirmation', 'sprint_no'
         ]
+        widgets = {
+            'status': forms.HiddenInput(),
+            'sprint_no': forms.HiddenInput()
+            }
 
-class PB_editForm(forms.ModelForm):
+class create_sprint_form(forms.ModelForm):
     class Meta:
-        model=PB_item
+        model=Sprint
         fields=[
-            'name','status','priority_no','story_point','user_story','confirmation'
+            'sprint_no', 'capacity', 'status'
         ]
+        widgets = {
+            'sprint_no': forms.HiddenInput(),
+            'status': forms.HiddenInput()
+            }

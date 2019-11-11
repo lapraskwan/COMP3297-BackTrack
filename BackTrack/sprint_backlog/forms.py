@@ -12,4 +12,7 @@ class sprint_backlog_item_form(forms.ModelForm):
             "owner",
             "estimation"
         ]
-        widgets = {'PBI': forms.HiddenInput()}
+        widgets = {
+            'PBI': forms.HiddenInput(),
+            'status': forms.HiddenInput(),
+            }

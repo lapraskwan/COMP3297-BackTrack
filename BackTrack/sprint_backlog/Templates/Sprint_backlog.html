@@ -1,15 +1,15 @@
 {% extends 'Sprint_base.html'%}
 
 {% block content%}
-<h2>PBIs pending in this sprint</h2>
-<table width=75% border="1">
+<h2>PBI in this sprint</h2>
+<table>
     <tr>
-        <th  align=left>Feature</th>
-        <th  align=left>Status</th>
-        <th  align=left>Priority number</th>
-        <th  align=left>Story point</th>
-        <th  align=left>User story</th>
-        <th  align=left>Confirmation</th>
+        <th>Feature</th>
+        <th>Status</th>
+        <th>Priority number</th>
+        <th>Story point</th>
+        <th>User story</th>
+        <th>Confirmation</th>
         <th></th>
         <th></th>
     </tr>
@@ -26,45 +26,62 @@
         {% else %}
         <td><a href="add/{{i.id}}"><button>Add Sprint Item</button></a></td>
         {% endif %}
+        {% if i.status == "Finished" %}
+        <td><a href="pushPBIBack/{{i.id}}"><button disabled>Push Back</button></a></td>
+        {% else %}
         <td><a href="pushPBIBack/{{i.id}}"><button>Push Back</button></a></td>
+        {% endif %}
     </tr>
     {% endfor %}
 </table>
 
 <br>
 <br>
-<h2>Sprint Backlog</h2>
-<table width=75% border="1">
+<h2>Sprint Items</h2>
+<table>
     <tr>
-        <th align=left>PBI</th>
-        <th align=left>Title</th>
-        <th align=left>Status</th>
-        <th align=left>Owner</th>
-        <th align=left>Estimation (Hours)</th>
+        <th>PBI</th>
+        <th>Title</th>
+        <th>Status</th>
+        <th>Owner</th>
+        <th>Estimation (Hours)</th>
+        <th></th>
+        <th></th>
         <th></th>
         <th></th>
     </tr>
     {% for PBI in PBI %}
-        {% for i in item %}
-            {% if i.PBI == PBI.id %}
-            <tr>
-                <td>{{ PBI.name }}</td>
-                <td>{{ i.title }}</td>
-                <td>{{ i.status }}</td>
-                <td>{{ i.owner }}</td>
-                <td>{{ i.estimation }}</td>
-                <td><a href="update/{{i.id}}"><button>Update</button></a></td>
-                <td><a href="delete/{{i.id}}"><button>Delete</button></a></td>
-            </tr>
-            {% endif %}
-        {% endfor%}
+    {% for i in item %}
+    {% if i.PBI == PBI.id %}
+    <tr>
+        <td>{{ PBI.name }}</td>
+        <td>{{ i.title }}</td>
+        <td>{{ i.status }}</td>
+        <td>{{ i.owner }}</td>
+        <td>{{ i.estimation }}</td>
+        {% if i.status == "Pending" %}
+        <td><a href="update/{{i.id}}"><button>Update</button></a></td>
+        <td><a href="delete/{{i.id}}"><button>Delete</button></a></td>
+        {% else %}
+        <td><a href="update/{{i.id}}"><button disabled>Update</button></a></td>
+        <td><a href="delete/{{i.id}}"><button disabled>Delete</button></a></td>
+        {% endif %}
+        <td><a href=""><button>Click to set yourself as owner</button></a></td>
+        {% if i.status == "In Progress" or i.status == "Unfinished" %}
+        <td><a href="doneSprintItem/{{i.id}}"><button>Done</button></a></td>
+        {% else %}
+        <td><a href="doneSprintItem/{{i.id}}"><button disabled>Done</button></a></td>
+        {% endif %}
+    </tr>
+    {% endif %}
+    {% endfor%}
     {% endfor %}
 </table>
 
 <br>
 <br>
 <h2>Sprint Burndown</h2>
-<table border="1">
+<table>
     <tr>
         <th></th>
         <th>Total Estimation</th>
@@ -87,5 +104,6 @@
 
 <br>
 <br>
+<a href="endSprint/"><button>End Sprint</button></a>
 <a href="../PBI"><button>Go to Product Backlog</button></a>
 {% endblock%}
