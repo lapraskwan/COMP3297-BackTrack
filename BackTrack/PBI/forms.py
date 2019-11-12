@@ -11,6 +11,7 @@ class PB_itemForm(forms.ModelForm):
         ]
         widgets = {
             'status': forms.HiddenInput(),
+            'priority_no': forms.HiddenInput(),
             'sprint_no': forms.HiddenInput()
             }
 
