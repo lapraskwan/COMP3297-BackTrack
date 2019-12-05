@@ -1,35 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>BackTrack</title>
-    <style>
-        table, th, td {
-          border: 1px solid black;
-        }
-        table {
-          width: 75%;
-        }
-        th {
-          text-align: left;
-        }
-      </style>
-  </head>
 
-  <body>
-    <h1>Sprint {{ currentSprintNumber }} Backlog</h1>
-    <h4>Remaining capacity: {{ remainingCapacity }} / {{capacity}}</h3>
+<head>
+  <title>BackTrack</title>
+  <style>
+    table,
+    th,
+    td {
+      border: 1px solid black;
+    }
+
+    table {
+      width: 75%;
+    }
+
+    th {
+      text-align: left;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Sprint {{ currentSprintNumber }} Backlog</h1>
+  <h4>Remaining capacity: {{ remainingCapacity }} / {{capacity}}</h3>
     {% block content %}
     {% endblock%}
-    
-    <p>The Done button can only be pressed when the item status is In Progress</p>
-    <p>Things to be added:</p>
-    <p>1. Set owner to change the status of sprint items from Pending to In Progress.</p>
-    
-  </body>
-  {% if alert_flag_1 %}
-    <script>alert("Total estimation exceeds capacity! This sprint backlog item cannot be added!")</script>  
-  {% endif %}
-  {% if alert_flag_2 %}
-    <script>alert("Total estimation exceeds capacity! No more items can be added! Please remove some items!")</script>  
-  {% endif %}
+
+    {% if productOwner %}
+    <p>Hello {{ username }}, you are logged in as a product owner.</p>
+    {% else %}
+    <p>Hello {{ username }}, you are logged in as a developer.</p>
+    {% endif %}
+    <a href="../login"><button>logout</button></a>
+
+</body>
+{% if alert_flag_1 %}
+<script>
+  alert("Total estimation exceeds capacity! This sprint backlog item cannot be added!")
+</script>
+{% endif %}
+{% if alert_flag_2 %}
+<script>
+  alert("Total estimation exceeds capacity! No more items can be added! Please remove some items!")
+</script>
+{% endif %}
+
 </html>

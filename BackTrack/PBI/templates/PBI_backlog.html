@@ -31,13 +31,26 @@
       {{ item.priority_no }}
       {% if item.priority_no == 1 %}
       <a href="movePBIup/{{item.id}}"><button disabled>+</button></a>
+      {% if productOwner%}
       <a href="movePBIdown/{{item.id}}"><button>-</button></a>
+      {% else %}
+      <a href="movePBIdown/{{item.id}}"><button disabled>-</button></a>
+      {% endif %}
       {% elif item.priority_no == lowestPriority %}
+      {% if productOwner%}
       <a href="movePBIup/{{item.id}}"><button>+</button></a>
+      {% else %}
+      <a href="movePBIup/{{item.id}}"><button disabled>+</button></a>
+      {% endif %}
       <a href="movePBIdown/{{item.id}}"><button disabled>-</button></a>
       {% else %}
+      {% if productOwner%}
       <a href="movePBIup/{{item.id}}"><button>+</button></a>
       <a href="movePBIdown/{{item.id}}"><button>-</button></a>
+      {% else %}
+      <a href="movePBIup/{{item.id}}"><button disabled>+</button></a>
+      <a href="movePBIdown/{{item.id}}"><button disabled>-</button></a>
+      {% endif %}
       {% endif %}
     </td>
     <td class="story_point">{{ item.story_point }}</td>
@@ -46,10 +59,19 @@
     <td>{{ item.user_story }}</td>
     <td>{{ item.confirmation }}</td>
     {% if item.status == "Pending" or item.status == "Unfinished" %}
+    {% if productOwner%}
     <td><a href="edit/{{item.id}}"><button>edit</button></a></td>
     <td><a href="delete/{{item.id}}"><button>delete</button></a></td>
+    {% else %}
+    <td><a href="edit/{{item.id}}"><button disabled>edit</button></a></td>
+    <td><a href="delete/{{item.id}}"><button disabled>delete</button></a></td>
+    {% endif %}
     {% if activeSprintExists %}
+    {% if productOwner %}
+    <td><a href="addPBIToCurrentSprint/{{item.id}}"><button disabled>Add To Sprint</button></a></td>
+    {% else %}
     <td><a href="addPBIToCurrentSprint/{{item.id}}"><button>Add To Sprint</button></a></td>
+    {% endif %}
     {% else %}
     <td><a href="addPBIToCurrentSprint/{{item.id}}"><button disabled>Add To Sprint</button></a></td>
     {% endif %}
@@ -63,7 +85,11 @@
 </table>
 
 <br>
+{% if productOwner%}
 <a href="add/"><button>Add PBI</button></a>
+{% else %}
+<a href="add/"><button disabled>Add PBI</button></a>
+{% endif %}
 <br>
 <button onclick="filterFinishedPBI()" id="hide">Hide Finished PBI</button>
 <br>
@@ -73,4 +99,5 @@
 {% else %}
 <a href="createSprint/"><button>Create Sprint</button></a>
 {% endif %}
+
 {% endblock%}

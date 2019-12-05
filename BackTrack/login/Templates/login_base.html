@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>BackTrack</title>
+</head>
+
+<body>
+  <h1>Welcome to BackTrack</h1>
+
+  <form method='POST'> {% csrf_token %}
+    {{ form.as_p }}
+    <input type='submit' value='Login' />
+  </form>
+  {% if incorrectUsername %}
+  <p>Incorrect Username</p>
+  {% endif %}
+  {% if incorrectPW %}
+  <p>Incorrect Password</p>
+  {% endif %}
+</body>
+
+</html>

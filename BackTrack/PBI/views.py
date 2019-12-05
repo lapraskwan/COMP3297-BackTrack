@@ -1,11 +1,19 @@
 from django.shortcuts import render, redirect
 from .forms import PB_itemForm, create_sprint_form
 from .models import PB_item, Project_info, Sprint
+from login.models import currentUser
 from django.utils.html import strip_tags
 # Create your views here.
 
 # The main view that displays all PBIs (the backlog view)
 def backlog_view(request,*args,**kwargs):
+    # Get current user info
+    user = currentUser.objects.all()[0]
+    if user.userType == 1:
+        productOwner = True
+    else:
+        productOwner = False
+
     # Get Total Story Points
     PBI_all = PB_item.objects.all()
     totalStoryPoints = 0
@@ -34,6 +42,8 @@ def backlog_view(request,*args,**kwargs):
         "finished_story_points":finishedStoryPoints,
         "activeSprintExists": activeSprintExists,
         "lowestPriority": lowestPriority,
+        "username": user.username,
+        "productOwner": productOwner,
     }
 
     return render(request,"PBI_backlog.html",context)
@@ -41,6 +51,13 @@ def backlog_view(request,*args,**kwargs):
 
 # The view to add a PBI
 def add_view(request,*args,**kwargs):
+    # Get current user info
+    user = currentUser.objects.all()[0]
+    if user.userType == 1:
+        productOwner = True
+    else:
+        productOwner = False
+
     # Get Lowest Priority
     lowestPriority = PB_item.objects.all().latest("priority_no").priority_no
     form=PB_itemForm(request.POST or None, initial={
@@ -49,12 +66,23 @@ def add_view(request,*args,**kwargs):
     if form.is_valid():
         form.save()
         return redirect('../')
-    context={'form':form}
+    context={
+        'form':form,
+        "username": user.username,
+        "productOwner": productOwner,
+        }
     return render(request,"PBI_form.html",context)
 
 
 # The view to display details for a certain PBI (for editing)
 def edit_view(request, id):
+    # Get current user info
+    user = currentUser.objects.all()[0]
+    if user.userType == 1:
+        productOwner = True
+    else:
+        productOwner = False
+
     PBI=PB_item.objects.get(id=id)
     form=PB_itemForm(request.POST or None,initial={
         'name':PBI.name,
@@ -74,7 +102,11 @@ def edit_view(request, id):
         PBI.confirmation=form.cleaned_data['confirmation']
         PBI.save()
         return redirect('../')
-    context={'form':form,'placeholder':PBI}
+    context={
+        'form':form,'placeholder':PBI,
+        "username": user.username,
+        "productOwner": productOwner,
+        }
 
     return render(request,"PBI_form.html",context)
 
@@ -86,6 +118,13 @@ def delete_view(request,id):
 
 # To create a new sprint
 def create_sprint(request):
+    # Get current user info
+    user = currentUser.objects.all()[0]
+    if user.userType == 1:
+        productOwner = True
+    else:
+        productOwner = False
+
     # Get the current sprint number
     sprints = Sprint.objects.all()
     if sprints.exists():
@@ -102,7 +141,11 @@ def create_sprint(request):
     if form.is_valid():
         form.save()
         return redirect('../')
-    context={'form': form}
+    context={
+        'form': form,
+        "username": user.username,
+        "productOwner": productOwner,
+        }
     return render(request, "PBI_form.html", context)
 
 def add_PBI_to_current_sprint(request, id):

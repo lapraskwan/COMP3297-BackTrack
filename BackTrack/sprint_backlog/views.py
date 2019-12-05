@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
-from django.contrib import messages
+# from django.contrib import messages
 from .models import sprint_backlog_item
 from PBI.models import PB_item, Sprint
+from login.models import currentUser
 from .forms import sprint_backlog_item_form
 
 # Create your views here.
@@ -9,6 +10,13 @@ from .forms import sprint_backlog_item_form
 
 
 def backlog_view(request):
+    # Get current user info
+    user = currentUser.objects.all()[0]
+    if user.userType == 1:
+        productOwner = True
+    else:
+        productOwner = False
+
     # Get info of the current sprint
     sprints = Sprint.objects.all()
     if sprints.exists():
@@ -78,11 +86,20 @@ def backlog_view(request):
         "PBI": inProgressPBIItems, 
         "item": sprintBacklogItems, 
         "alert_flag_2": alert_flag_2, 
-        "disableButton": disableButton
+        "disableButton": disableButton,
+        "username": user.username,
+        "productOwner": productOwner,
         }
     return render(request, "Sprint_backlog.html", context)
 
 def add_view(request, id):
+    # Get current user info
+    user = currentUser.objects.all()[0]
+    if user.userType == 1:
+        productOwner = True
+    else:
+        productOwner = False
+
     # Get info of the current sprint
     sprints = Sprint.objects.all()
     if sprints.exists():
@@ -136,7 +153,9 @@ def add_view(request, id):
                 'form': form, 
                 "capacity": capacity, 
                 "remainingCapacity": remainingCapacity, 
-                "alert_flag_1": True
+                "alert_flag_1": True,
+                "username": user.username,
+                "productOwner": productOwner,
                 }
             return render(request, "Sprint_form.html", context)
         else:
@@ -146,6 +165,8 @@ def add_view(request, id):
         'form':form,
         "capacity": capacity, 
         "remainingCapacity": remainingCapacity,
+        "username": user.username,
+        "productOwner": productOwner,
         }
     return render(request,"Sprint_form.html",context)
 
@@ -156,6 +177,13 @@ def delete_view(request, id):
     return redirect("../")
 
 def edit_view(request, id):
+    # Get current user info
+    user = currentUser.objects.all()[0]
+    if user.userType == 1:
+        productOwner = True
+    else:
+        productOwner = False
+
     # Get info of the current sprint
     sprints = Sprint.objects.all()
     if sprints.exists():
@@ -197,7 +225,12 @@ def edit_view(request, id):
     if form.is_valid():
         if form.cleaned_data["estimation"] + totalEstimation - originalItemEstimation > capacity:
             # Return
-            context={'form': form, "alert_flag_1": True}
+            context={
+                'form': form, 
+                "alert_flag_1": True,
+                "username": user.username,
+                "productOwner": productOwner,
+                }
             return render(request, "Sprint_form.html", context)
         else:
             item.title=form.cleaned_data['title']
@@ -211,6 +244,8 @@ def edit_view(request, id):
         'form':form,
         "capacity": capacity, 
         "remainingCapacity": remainingCapacity,
+        "username": user.username,
+        "productOwner": productOwner,
         }
 
     return render(request,"Sprint_form.html",context)
@@ -279,3 +314,19 @@ def doneSprintItem(request, id):
     item.status = "Finished"
     item.save()
     return redirect('../')
+
+def setOwner(request, id):
+    # Get current user info
+    user = currentUser.objects.all()[0]
+    if user.userType == 1:
+        productOwner = True
+    else:
+        productOwner = False
+
+    # Get the sprint backlog item
+    item = sprint_backlog_item.objects.filter(id=id)[0]
+    item.owner = user.username
+    item.status = "In Progress"
+    item.save()
+
+    return redirect("../")

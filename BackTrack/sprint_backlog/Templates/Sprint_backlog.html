@@ -21,12 +21,12 @@
         <td>{{ i.story_point }}</td>
         <td>{{ i.user_story }}</td>
         <td>{{ i.confirmation }}</td>
-        {% if disableButton %}
+        {% if disableButton or productOwner %}
         <td><a href="add/{{i.id}}"><button disabled>Add Sprint Item</button></a></td>
         {% else %}
         <td><a href="add/{{i.id}}"><button>Add Sprint Item</button></a></td>
         {% endif %}
-        {% if i.status == "Finished" %}
+        {% if i.status == "Finished" or productOwner %}
         <td><a href="pushPBIBack/{{i.id}}"><button disabled>Push Back</button></a></td>
         {% else %}
         <td><a href="pushPBIBack/{{i.id}}"><button>Push Back</button></a></td>
@@ -59,16 +59,24 @@
         <td>{{ i.status }}</td>
         <td>{{ i.owner }}</td>
         <td>{{ i.estimation }}</td>
-        {% if i.status == "Pending" %}
+        {% if i.status == "Pending" and not productOwner %}
         <td><a href="update/{{i.id}}"><button>Update</button></a></td>
         <td><a href="delete/{{i.id}}"><button>Delete</button></a></td>
+        <td><a href="setOwner/{{i.id}}"><button>Click to set yourself as owner</button></a></td>
         {% else %}
         <td><a href="update/{{i.id}}"><button disabled>Update</button></a></td>
         <td><a href="delete/{{i.id}}"><button disabled>Delete</button></a></td>
+        <td><a href="setOwner/{{i.id}}"><button disabled>Click to set yourself as owner</button></a></td>
         {% endif %}
-        <td><a href=""><button>Click to set yourself as owner</button></a></td>
-        {% if i.status == "In Progress" or i.status == "Unfinished" %}
+        
+        {% if productOwner %}
+        <td><a href="doneSprintItem/{{i.id}}"><button disabled>Done</button></a></td>
+        {% elif i.status == "In Progress" or i.status == "Unfinished" %}
+        {% if username == i.owner %}
         <td><a href="doneSprintItem/{{i.id}}"><button>Done</button></a></td>
+        {% else %}
+        <td><a href="doneSprintItem/{{i.id}}"><button disabled>Done</button></a></td>
+        {% endif %}
         {% else %}
         <td><a href="doneSprintItem/{{i.id}}"><button disabled>Done</button></a></td>
         {% endif %}
@@ -104,6 +112,10 @@
 
 <br>
 <br>
+{% if productOwner %}
+<a href="endSprint/"><button disabled>End Sprint</button></a>
+{% else %}
 <a href="endSprint/"><button>End Sprint</button></a>
+{% endif %}
 <a href="../PBI"><button>Go to Product Backlog</button></a>
 {% endblock%}
