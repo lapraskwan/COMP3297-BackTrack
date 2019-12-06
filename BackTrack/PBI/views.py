@@ -19,13 +19,13 @@ def backlog_view(request,*args,**kwargs):
     totalStoryPoints = 0
     for PBI in PBI_all:
         totalStoryPoints += PBI.story_point
-    
+
     # Get Finished Story Points
     PBI_finished = PB_item.objects.filter(status="Finished")
     finishedStoryPoints = 0
     for PBI in PBI_finished:
         finishedStoryPoints += PBI.story_point
-    
+
     # Check if user is allowed to create sprint
     # only if no sprint is active
     if Sprint.objects.filter(status="active").exists():
@@ -87,16 +87,14 @@ def edit_view(request, id):
     form=PB_itemForm(request.POST or None,initial={
         'name':PBI.name,
         'status':PBI.status,
-        'priority_no':PBI.priority_no,
         'story_point':PBI.story_point,
         'user_story':PBI.user_story,
         'confirmation':PBI.confirmation
         })
-        
+
     if form.is_valid():
         PBI.name=form.cleaned_data['name']
         PBI.status=form.cleaned_data['status']
-        PBI.priority_no=form.cleaned_data['priority_no']
         PBI.story_point=form.cleaned_data['story_point']
         PBI.user_story=form.cleaned_data['user_story']
         PBI.confirmation=form.cleaned_data['confirmation']
@@ -155,7 +153,7 @@ def add_PBI_to_current_sprint(request, id):
         current_sprint_no = sprints.latest("id").sprint_no
     else:
         current_sprint_no = 0
-        
+
     PBI = PB_item.objects.get(id=id)
     PBI.sprint_no = current_sprint_no
     PBI.status = "In Progress"

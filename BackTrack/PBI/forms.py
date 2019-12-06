@@ -7,11 +7,10 @@ class PB_itemForm(forms.ModelForm):
     class Meta:
         model=PB_item
         fields=[
-            'name','status','priority_no','story_point', 'user_story','confirmation', 'sprint_no'
+            'name','status','story_point', 'user_story','confirmation', 'sprint_no'
         ]
         widgets = {
             'status': forms.HiddenInput(),
-            'priority_no': forms.HiddenInput(),
             'sprint_no': forms.HiddenInput()
             }
 
