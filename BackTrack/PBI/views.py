@@ -64,6 +64,7 @@ def add_view(request,*args,**kwargs):
         "priority_no": lowestPriority + 1
     })
     if form.is_valid():
+        form.priority_no=lowestPriority+1
         form.save()
         return redirect('../')
     context={

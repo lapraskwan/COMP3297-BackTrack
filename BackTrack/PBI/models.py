@@ -4,7 +4,7 @@ from django.db import models
 class PB_item(models.Model):
     # Name of this PBI
     name=models.CharField(max_length=100)
-    
+
     # Set the choices of status of PBI. (actual value, readable name)
     PBIstatusChoices = [
         ("Pending", "Pending"),
@@ -14,7 +14,7 @@ class PB_item(models.Model):
     ]
     # Status of this PBI, e.g. "Finished"
     status=models.CharField(max_length=100, choices=PBIstatusChoices, default="Pending", blank=True)
-    
+
     # Priority number of this PBI, i.e. the most important feature has priority 1, the second most has priority 2, etc
     priority_no=models.IntegerField(unique=True)
 
@@ -64,4 +64,3 @@ class Sprint(models.Model):
 
     # # End Time
     # end_time=models.DateTimeField(max_length=400,default="")
-
