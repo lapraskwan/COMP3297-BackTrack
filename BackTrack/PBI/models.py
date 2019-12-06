@@ -16,7 +16,7 @@ class PB_item(models.Model):
     status=models.CharField(max_length=100, choices=PBIstatusChoices, default="Pending", blank=True)
 
     # Priority number of this PBI, i.e. the most important feature has priority 1, the second most has priority 2, etc
-    priority_no=models.IntegerField(unique=True)
+    priority_no=models.IntegerField()
 
     # Story point estimation of this PBI
     story_point=models.IntegerField(default=1)

@@ -88,6 +88,7 @@ def edit_view(request, id):
     form=PB_itemForm(request.POST or None,initial={
         'name':PBI.name,
         'status':PBI.status,
+        'priority_no':PBI.priority_no,
         'story_point':PBI.story_point,
         'user_story':PBI.user_story,
         'confirmation':PBI.confirmation
